@@ -1,0 +1,526 @@
+@import "tailwindcss";
+@import "./styles/cina.css";
+@import "./styles/pro-mobile.css";
+@import "./styles/watch-skin.css";
+
+/* ─── Fluid Viewport Root & Percentage Governance ──────────────────────── */
+html {
+  font-size: clamp(87.5%, 0.42vw + 0.68rem, 118%);
+  width: 100%;
+}
+
+:root {
+  --gutter: 4.5%;
+  --w-page: 100%;
+  --sec-gap: 6.5vh;
+}
+
+/* ─── Surface Scroll & Viewport Governance ─────────────────────────────── */
+html:has(body[data-surface="watch"]),
+body[data-surface="watch"],
+html:has(body[data-surface="producers"]),
+body[data-surface="producers"],
+html:has(body[data-surface="about"]),
+body[data-surface="about"] {
+  background: var(--c-bg);
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  height: auto !important;
+  min-height: 100vh;
+  width: 100%;
+}
+
+body[data-surface="watch"] #root,
+body[data-surface="producers"] #root,
+body[data-surface="about"] #root {
+  width: 100% !important;
+  height: auto !important;
+  min-height: 100vh;
+}
+
+body[data-surface="studio"][data-orb="on"] #root {
+  height: calc(100vh - var(--orb-safe, 0rem));
+  width: 100%;
+}
+
+/* ─── Responsive Scalable Images, Videos & Frame Art ───────────────────── */
+img,
+video,
+canvas {
+  max-width: 100%;
+}
+
+.pm-hero__img img,
+.pm-hero__img video,
+.pm-hero__img svg,
+.pm-card__img img,
+.pm-card__img video,
+.pm-card__img svg {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  display: block;
+}
+
+/* ─── Redesigned UI/UX Typography, Contrast & Surface Polish ───────────── */
+body {
+  font-family: var(--f-sans, "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif);
+  letter-spacing: -0.006em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.t-num,
+.t-mono,
+.cui-stat__v,
+.pm-stat__v,
+.cui-delta,
+table td {
+  font-variant-numeric: tabular-nums;
+}
+
+header {
+  backdrop-filter: blur(22px) saturate(145%);
+  -webkit-backdrop-filter: blur(22px) saturate(145%);
+}
+
+/* Refined custom darkroom scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--c-line-3) transparent;
+}
+*::-webkit-scrollbar {
+  width: 0.45rem;
+  height: 0.45rem;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: var(--c-line-2);
+  border-radius: 999rem;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background-color: var(--c-line-3);
+}
+
+/* Smooth micro-interactions on interactive surfaces */
+.btn,
+.pm-btn,
+.cui-btn {
+  transition:
+    background-color 0.16s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.16s cubic-bezier(0.16, 1, 0.3, 1),
+    color 0.16s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.16s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.16s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ─── Contextual Sub-Navigation Bar (Fluid Percentage Padding) ─────────── */
+.cina-subbar {
+  position: sticky;
+  top: 3.75rem;
+  z-index: 44;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5%;
+  min-height: 2.65rem;
+  width: 100%;
+  padding: 0 4.5%;
+  background: color-mix(in srgb, var(--c-panel) 90%, transparent);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border-bottom: 1px solid var(--c-line);
+  overflow-x: auto;
+}
+
+.cina-subbar::-webkit-scrollbar {
+  display: none;
+}
+
+.cina-subbar__eyebrow {
+  font-family: var(--f-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--c-amber);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.cina-subbar__tabs {
+  display: flex;
+  align-items: stretch;
+  gap: 1.5rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.cina-subbar__tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.65rem 0;
+  border: none;
+  border-bottom: 2px solid transparent;
+  border-radius: 0 !important;
+  background: transparent;
+  color: var(--c-ink-3);
+  font-family: var(--f-sans);
+  font-size: var(--fs-body);
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.14s ease, border-color 0.14s ease;
+}
+
+.cina-subbar__tab:hover {
+  color: var(--c-ink);
+}
+
+.cina-subbar__tab[data-active="true"] {
+  color: var(--c-ink);
+  border-bottom-color: var(--c-amber);
+  font-weight: 600;
+}
+
+.cina-subbar__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.38rem 0.85rem;
+  border-radius: 2px;
+  border: 1px solid color-mix(in srgb, var(--c-amber) 50%, var(--c-line-2));
+  background: color-mix(in srgb, var(--c-amber) 12%, transparent);
+  color: var(--c-ink);
+  font-family: var(--f-mono);
+  font-size: var(--fs-label);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  text-decoration: none;
+  flex-shrink: 0;
+  transition: all 0.14s ease;
+}
+
+.cina-subbar__cta:hover {
+  background: var(--c-amber);
+  color: var(--c-on-amber);
+  border-color: var(--c-amber);
+}
+
+/* ─── Strict Zero-Radius Rule on All Lined Menus, Tabs & Rows ──────────── */
+header nav button,
+.utn-slot button,
+.pm-tab,
+.pm-tabs button,
+.cui-tab,
+.cui-tabs button,
+.cina-subbar__tab,
+.pm-acct__nav button,
+.pm-index > button,
+.pm-index > .pm-row,
+.pm-faq > button,
+[role="tab"],
+[role="tablist"] button,
+[role="menu"] > button[style*="border-bottom"],
+[role="menu"] > button[style*="border-top"] {
+  border-radius: 0 !important;
+}
+
+/* ─── Safe-Area Clearance for Scrollable Watch Pages ───────────────────── */
+body[data-surface="watch"]:not([data-immersive-route="1"]) #main-content {
+  padding-bottom: 5.25rem;
+}
+
+/* ─── Bottom-Left Workspace Chip & Bottom-Right Pure Voice Orb (Zero Overlap) */
+.cina-dock {
+  position: fixed;
+  left: 1.5%;
+  right: auto;
+  bottom: 1rem;
+  max-width: 92%;
+  z-index: 8500;
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  border-radius: 0 !important;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(10, 10, 13, 0.92);
+  backdrop-filter: blur(20px) saturate(145%);
+  -webkit-backdrop-filter: blur(20px) saturate(145%);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.cina-dock::-webkit-scrollbar {
+  display: none;
+}
+
+@media (max-width: 760px) {
+  .cina-dock {
+    display: none;
+  }
+}
+
+.cina-voice-orb-wrap {
+  position: fixed;
+  right: 1rem;
+  bottom: 0.9rem;
+  z-index: 9600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+}
+
+/* On Watch Party / Screening Player / Builder routes, lift the Orb clear of the bottom-right Send button and transport bars */
+body[data-immersive-route="1"] .cina-voice-orb-wrap {
+  bottom: 5.1rem;
+  right: 1rem;
+}
+
+@media (max-width: 760px) {
+  .cina-voice-orb-wrap {
+    bottom: 4.65rem;
+    right: 3%;
+  }
+  body[data-immersive-route="1"] .cina-voice-orb-wrap {
+    bottom: 5.25rem;
+  }
+}
+
+.cina-voice-orb {
+  position: relative;
+  width: 3.6rem;
+  height: 3.6rem;
+  padding: 0;
+  margin: 0;
+  border: none;
+  border-radius: 9999px;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1), filter 0.24s ease;
+  outline: none;
+}
+
+.cina-voice-orb:hover {
+  transform: scale(1.06);
+}
+
+.cina-voice-orb:focus-visible {
+  box-shadow: 0 0 0 2px var(--c-amber);
+}
+
+@keyframes cinaOrbBreathe {
+  0%, 100% {
+    transform: scale(1.06);
+  }
+  50% {
+    transform: scale(1.13);
+  }
+}
+
+@keyframes cinaOrbRadialPulse {
+  0%, 100% {
+    transform: scale(0.94);
+    opacity: 0.42;
+  }
+  50% {
+    transform: scale(1.24);
+    opacity: 0.85;
+  }
+}
+
+@keyframes cinaOrbInnerGlow {
+  0%, 100% {
+    opacity: 0.48;
+    box-shadow:
+      inset 0 0 12px rgba(var(--accent-rgb, 232, 163, 61), 0.32),
+      0 0 14px rgba(var(--accent-rgb, 232, 163, 61), 0.2);
+  }
+  50% {
+    opacity: 0.92;
+    box-shadow:
+      inset 0 0 20px rgba(var(--accent-rgb, 232, 163, 61), 0.58),
+      0 0 24px rgba(var(--accent-rgb, 232, 163, 61), 0.38);
+  }
+}
+
+.cina-voice-orb--active {
+  transform: scale(1.08);
+  animation: cinaOrbBreathe 2.8s ease-in-out infinite;
+  will-change: transform;
+}
+
+.cina-voice-orb--active::before {
+  content: "";
+  position: absolute;
+  inset: -14%;
+  border-radius: 9999px;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(
+    circle,
+    rgba(var(--accent-rgb, 232, 163, 61), 0.34) 0%,
+    rgba(var(--accent-rgb, 232, 163, 61), 0.14) 52%,
+    transparent 74%
+  );
+  animation: cinaOrbRadialPulse 2.4s ease-in-out infinite;
+  will-change: transform, opacity;
+}
+
+.cina-voice-orb--active::after {
+  content: "";
+  position: absolute;
+  inset: 14%;
+  border-radius: 9999px;
+  pointer-events: none;
+  z-index: 2;
+  background: radial-gradient(
+    circle,
+    rgba(var(--accent-rgb, 232, 163, 61), 0.12) 0%,
+    rgba(var(--accent-rgb, 232, 163, 61), 0.24) 68%,
+    rgba(var(--accent-rgb, 232, 163, 61), 0.04) 100%
+  );
+  mix-blend-mode: screen;
+  animation: cinaOrbInnerGlow 2.4s ease-in-out infinite;
+  will-change: opacity, box-shadow;
+}
+
+.cina-voice-orb-wrap[data-state="speaking"] .cina-voice-orb--active {
+  animation-duration: 1.6s;
+}
+
+.cina-voice-orb-wrap[data-state="thinking"] .cina-voice-orb--active,
+.cina-voice-orb-wrap[data-state="connecting"] .cina-voice-orb--active {
+  animation-duration: 1.8s;
+}
+
+.cina-voice-orb-wrap[data-state="thinking"] .cina-voice-orb--active::before,
+.cina-voice-orb-wrap[data-state="thinking"] .cina-voice-orb--active::after,
+.cina-voice-orb-wrap[data-state="connecting"] .cina-voice-orb--active::before,
+.cina-voice-orb-wrap[data-state="connecting"] .cina-voice-orb--active::after {
+  animation-duration: 1.25s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cina-voice-orb--active,
+  .cina-voice-orb--active::before,
+  .cina-voice-orb--active::after {
+    animation: none;
+  }
+  .cina-voice-orb--active::before,
+  .cina-voice-orb--active::after {
+    opacity: 0.65;
+  }
+}
+
+.cina-voice-orb__canvas {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+}
+
+.cina-dock__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  height: 2.2rem;
+  padding: 0 0.82rem;
+  border: none;
+  border-right: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 0 !important;
+  background: transparent;
+  color: var(--c-ink-2);
+  font-family: var(--f-sans);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.cina-dock__btn:last-child {
+  border-right: none;
+}
+
+.cina-dock__btn:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--c-ink);
+}
+
+.cina-dock__btn--active,
+.cina-dock__btn[data-active="true"] {
+  background: rgba(var(--accent-rgb), 0.16);
+  color: var(--c-ink);
+}
+
+.cina-dock__mark {
+  font-family: var(--f-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: var(--fs-body);
+  color: var(--c-amber);
+}
+
+.cina-dock__kbd {
+  font-family: var(--f-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  color: var(--c-ink-4);
+  padding: 0.08rem 0.32rem;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.cina-atlas-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 9500;
+  background: rgba(4, 4, 6, 0.76);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3%;
+  animation: cinaAtlasFade 0.16s ease;
+}
+
+.cina-atlas-modal {
+  width: 92%;
+  max-width: 72rem;
+  max-height: 86vh;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--r-2);
+  border: 1px solid var(--c-line-2);
+  background: var(--c-panel);
+  color: var(--c-ink);
+  box-shadow: 0 32px 90px rgba(0, 0, 0, 0.68);
+  overflow: hidden;
+  animation: cinaAtlasRise 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes cinaAtlasFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes cinaAtlasRise {
+  from { opacity: 0; transform: translateY(0.5rem) scale(0.99); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}

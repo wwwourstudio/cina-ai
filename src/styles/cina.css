@@ -1,0 +1,560 @@
+/* CINA — design tokens + base styles
+   Aesthetic: pro-tool dark (DaVinci/Final Cut), amber + oxblood accents on charcoal.
+*/
+
+:root {
+  /* Surfaces — graded charcoal */
+
+  /* Ink — bone-white scale, never pure white */
+
+  /* Accents */
+
+  /* Agents — each agent has a tint */
+
+  /* Status */
+
+  /* Type */
+
+  /* System — shared scales (Watch + Producers + Studio) */
+  --w-page: 1440px; --w-mid: 1120px; --w-text: 680px;
+  --gutter: clamp(20px, 4vw, 56px);
+
+  /* Radii */
+
+  /* Fluid type scale — clamp(min, vw-fluid, max). Use var(--fs-*) for anything
+     that should breathe with the viewport instead of a hard px value. */
+
+  /* Shadows */
+  --sh-1: 0 1px 0 rgba(255,255,255,.03) inset, 0 1px 2px rgba(0,0,0,.4);
+  --sh-2: 0 1px 0 rgba(255,255,255,.04) inset, 0 8px 24px rgba(0,0,0,.5);
+  --sh-glow-amber: 0 0 0 1px rgba(var(--accent-rgb),.3), 0 0 24px rgba(var(--accent-rgb),.15);
+}
+
+/* Light mode (rare, but supported via Tweaks) */
+[data-theme="light"] {
+
+
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--c-bg);
+  color: var(--c-ink);
+  font-family: var(--f-sans);
+  font-size:var(--fs-body);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "ss01", "cv11";
+  overflow: hidden;
+}
+
+#root { height: 100vh; width: 100vw; }
+
+button { font: inherit; color: inherit; cursor: default; }
+input, textarea, select { font: inherit; color: inherit; }
+
+/* Dark-themed text inputs used across Mint and other panels */
+.cina-input {
+  width: 100%;
+  padding: 8px 10px;
+  background: var(--c-bg);
+  border: 1px solid var(--c-line-2);
+  color: var(--c-amber);
+  font-family: var(--f-mono);
+  font-size:var(--fs-body);
+  letter-spacing: 0.02em;
+  outline: none;
+  transition: border-color var(--mo-quick) ease;
+}
+.cina-input::placeholder {
+  color: var(--c-ink-4);
+}
+.cina-input:focus {
+  border-color: var(--c-amber);
+  box-shadow: 0 0 0 1px rgba(232,163,61,.15);
+}
+.cina-input:hover:not(:focus) {
+  border-color: var(--c-line-3);
+}
+
+/* General-purpose form input — used across the Pitch workflow */
+.input {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  height: var(--btn-md, 40px);
+  padding: 0 12px;
+  background: var(--c-bg);
+  border: 1px solid var(--c-line-2);
+  border-radius: var(--r-md);
+  color: var(--c-ink);
+  font-family: var(--f-sans);
+  font-size:var(--fs-body);
+  line-height: 1.4;
+  outline: none;
+  transition: border-color var(--mo-quick) ease, box-shadow var(--mo-quick) ease, background var(--mo-quick) ease;
+}
+textarea.input { height: auto; padding: 10px 12px; line-height: 1.5; }
+.input::placeholder { color: var(--c-ink-4); }
+.input:hover:not(:focus) { border-color: var(--c-line-3); }
+.input:focus {
+  border-color: var(--c-amber);
+  box-shadow: 0 0 0 3px rgba(232,163,61,.14);
+  background: var(--c-panel-2);
+}
+
+/* Utility text styles */
+.t-mono { font-family: var(--f-mono); font-feature-settings: "zero", "ss01"; }
+.t-display { font-family: var(--f-display); font-weight: 400; letter-spacing: -0.01em; }
+.t-label {
+  font-family: var(--f-mono);
+  font-size:var(--fs-label);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--c-ink-3);
+  font-weight: 500;
+}
+.t-num { font-variant-numeric: tabular-nums; font-feature-settings: "zero", "tnum"; }
+
+/* Scrollbars — thin, dark, mostly hidden */
+*::-webkit-scrollbar { width: 8px; height: 8px; }
+*::-webkit-scrollbar-track { background: transparent; }
+*::-webkit-scrollbar-thumb {
+  background: var(--c-line-2);
+  border-radius: 4px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+*::-webkit-scrollbar-thumb:hover { background: var(--c-line-3); background-clip: content-box; border: 2px solid transparent; }
+
+/* Carousel rails hide their scrollbar entirely — navigation is via arrows */
+.cina-rail-scroller::-webkit-scrollbar { display: none; width: 0; height: 0; }
+
+/* Live-room audio equalizer bars */
+@keyframes rmEq { from { height: 30%; } to { height: 100%; } }
+
+/* Selection */
+::selection { background: rgba(232,163,61,0.35); color: var(--c-ink); }
+
+/* Focus rings — subtle */
+:focus-visible {
+  outline: 1px solid var(--c-amber);
+  outline-offset: 1px;
+}
+
+/* Common surface classes */
+.panel {
+  background: var(--c-panel);
+  border: 1px solid var(--c-line);
+}
+.panel-raised {
+  background: var(--c-panel-2);
+  border: 1px solid var(--c-line);
+}
+
+/* Base buttons default to 0 radius so underlined tabs & lined menu rows never curve */
+button { border-radius: 0; }
+
+/* Pro-tool button */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 26px;
+  padding: 0 10px;
+  background: var(--c-panel-2);
+  border: 1px solid var(--c-line-2);
+  border-radius: 8px;
+  color: var(--c-ink-2);
+  font-size:var(--fs-label);
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background var(--mo-quick) ease, color var(--mo-quick) ease, border-color var(--mo-quick) ease, transform var(--mo-instant) ease;
+}
+.btn:hover { background: var(--c-panel-3); color: var(--c-ink); border-color: var(--c-line-3); }
+.btn:active { transform: translateY(0.5px); }
+.btn[data-active="true"] { background: var(--c-panel-3); color: var(--c-ink); border-color: var(--c-line-3); }
+
+.btn-primary {
+  background: var(--c-amber);
+  color: var(--c-on-amber);
+  border-color: var(--c-amber-d);
+  font-weight: 600;
+}
+.btn-primary:hover {
+  background: var(--c-amber-x);
+  color: var(--c-on-amber);
+  border-color: var(--c-amber);
+  box-shadow: 0 0 0 3px rgba(232,163,61,.18);
+}
+.btn-primary:active { background: var(--c-amber-d); }
+
+.btn-danger {
+  background: var(--c-blood);
+  color: var(--c-ink);
+  border-color: var(--c-blood);
+}
+.btn-danger:hover { background: var(--c-blood-x); }
+
+.btn-ghost {
+  background: transparent;
+  border-color: transparent;
+}
+.btn-ghost:hover { background: var(--c-panel-2); color: var(--c-ink); border-color: var(--c-line); }
+
+/* ──────────────────────────────────────────────────────────────────────
+   Phase 3 · Locked button scale
+   Three sizes only. Use these for any new control. Existing .btn (26px)
+   stays as the "pro-tool" inline density (data tables, toolbars).
+   ────────────────────────────────────────────────────────────────────── */
+:root {
+  --btn-sm: 32px;   /* dense rows, chips, inline actions */
+  --btn-md: 40px;   /* the default — forms, cards, drawers */
+  --btn-lg: 48px;   /* one primary per view */
+}
+.btn-sm { height: var(--btn-sm); padding: 0 14px; font-size:var(--fs-body); gap: 8px; border-radius: 8px; }
+.btn-md { height: var(--btn-md); padding: 0 18px; font-size:var(--fs-body); gap: 8px; border-radius: 8px; }
+.btn-lg { height: var(--btn-lg); padding: 0 22px; font-size:var(--fs-body); gap: 10px; border-radius: 8px; }
+.btn-sm.btn-icon, .btn-md.btn-icon, .btn-lg.btn-icon { padding: 0; }
+.btn-sm.btn-icon { width: var(--btn-sm); }
+.btn-md.btn-icon { width: var(--btn-md); }
+.btn-lg.btn-icon { width: var(--btn-lg); }
+
+/* ──────────────────────────────────────────────────────────────────────
+   Phase 3 · Locked display type scale
+   Editorial type — italic Fraunces. Use these instead of inline font-size.
+   The numbers are the scale: 22 · 32 · 52 · 80 · 112 (px).
+   ────────────────────────────────────────────────────────────────────── */
+.t-d-1 { font-family: var(--f-display); font-style: italic; font-weight: 400; font-size:var(--fs-title);  line-height: 1.20; letter-spacing: -0.010em; }
+.t-d-2 { font-family: var(--f-display); font-style: italic; font-weight: 400; font-size:var(--fs-head);  line-height: 1.05; letter-spacing: -0.020em; }
+.t-d-3 { font-family: var(--f-display); font-style: italic; font-weight: 400; font-size:var(--fs-display);  line-height: 1.00; letter-spacing: -0.025em; text-wrap: balance; }
+.t-d-4 { font-family: var(--f-display); font-style: italic; font-weight: 400; font-size:var(--fs-display);  line-height: 0.96; letter-spacing: -0.030em; text-wrap: balance; }
+.t-d-5 { font-family: var(--f-display); font-style: italic; font-weight: 400; font-size:var(--fs-display); line-height: 0.92; letter-spacing: -0.035em; text-wrap: balance; }
+
+/* Editorial eyebrow — mono uppercase amber with optional dot.
+   Use .t-eyebrow as the canonical kicker above titles. */
+.t-eyebrow {
+  font-family: var(--f-mono);
+  font-size:var(--fs-label);
+  letter-spacing: .26em;
+  color: var(--c-amber);
+  text-transform: uppercase;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.t-eyebrow::before {
+  content: "";
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--c-amber);
+  box-shadow: 0 0 8px var(--c-amber);
+  display: inline-block;
+}
+.t-eyebrow.t-eyebrow--bare::before { display: none; }
+.t-eyebrow--dim { color: var(--c-ink-3); }
+.t-eyebrow--dim::before { background: var(--c-ink-3); box-shadow: none; }
+
+/* ──────────────────────────────────────────────────────────────────────
+   Phase 4 · Motion cadence tokens
+   One scale for the whole building. Use var(--mo-*) instead of inline
+   transition durations. Easings: in/out for live, ambient for slow.
+   ────────────────────────────────────────────────────────────────────── */
+:root {
+  --mo-instant: 80ms;        /* taps, focus rings */
+  --mo-quick:   140ms;       /* hover, button, color */
+  --mo-base:    240ms;       /* state changes, opens */
+  --mo-stage:   480ms;       /* page-level enters */
+  --mo-live:    1.4s;        /* pulses on LIVE indicators */
+  --mo-ambient: 2.0s;        /* slow ambient pulses */
+  --mo-cinema:  38s;         /* Ken Burns drift on hero photos */
+  --ease-out:   cubic-bezier(.2, .8, .2, 1);
+  --ease-soft:  cubic-bezier(.4, 0,   .2, 1);
+}
+
+@keyframes cina-pulse-live {
+  0%, 100% { opacity: 1;   transform: scale(1);   }
+  50%      { opacity: .4;  transform: scale(.85); }
+}
+@keyframes cina-pulse-ambient {
+  0%, 100% { opacity: 1;   }
+  50%      { opacity: .65; }
+}
+@keyframes cina-shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+.cina-live-dot {
+  display: inline-block;
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--c-amber);
+  box-shadow: 0 0 8px var(--c-amber);
+  animation: cina-pulse-live var(--mo-live) ease-in-out infinite;
+}
+.cina-live-dot--blood {
+  background: var(--c-blood-l);
+  box-shadow: 0 0 8px var(--c-blood-l);
+}
+.cina-ambient {
+  animation: cina-pulse-ambient var(--mo-ambient) ease-in-out infinite;
+}
+
+/* ──────────────────────────────────────────────────────────────────────
+   Phase 4 · Empty / Error / Skeleton states
+   Pair with <EmptyState/> <ErrorState/> <Skeleton/> in primitives.jsx.
+   ────────────────────────────────────────────────────────────────────── */
+.cina-state {
+  padding: 56px 28px;
+  text-align: center;
+  background: var(--c-panel);
+  border: 1px solid var(--c-line);
+  border-radius: 8px;
+  max-width: 520px; margin: 40px auto;
+}
+.cina-state__icon {
+  width: 52px; height: 52px; border-radius: 50%;
+  background: var(--c-panel-2);
+  border: 1px solid var(--c-line-2);
+  margin: 0 auto 16px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--c-ink-3);
+}
+.cina-state--error .cina-state__icon {
+  background: rgba(201,85,72,.10);
+  border-color: rgba(201,85,72,.35);
+  color: var(--c-blood-l);
+}
+.cina-state__title {
+  font-family: var(--f-display); font-style: italic;
+  font-size:var(--fs-title); line-height: 1.15; letter-spacing: -0.01em;
+  margin: 0 0 8px; color: var(--c-ink);
+}
+.cina-state__body {
+  font-size:var(--fs-body); color: var(--c-ink-3);
+  line-height: 1.55; max-width: 380px;
+  margin: 0 auto 18px;
+}
+
+.cina-skeleton {
+  display: block;
+  background: linear-gradient(90deg, var(--c-panel-2) 0%, var(--c-panel-3) 50%, var(--c-panel-2) 100%);
+  background-size: 200% 100%;
+  animation: cina-shimmer var(--mo-ambient) ease-in-out infinite;
+  border-radius: 4px;
+}
+
+
+.btn-icon {
+  width: 26px;
+  padding: 0;
+  justify-content: center;
+}
+
+/* Text link — used inside paragraphs / metadata */
+.link {
+  color: var(--c-ink-2);
+  cursor: pointer;
+  transition: color var(--mo-quick) ease;
+  border-bottom: 1px solid transparent;
+}
+.link:hover { color: var(--c-amber); border-bottom-color: rgba(232,163,61,.4); }
+
+/* Selectable card — for grids / shelves */
+.card-sel {
+  cursor: pointer;
+  transition: transform var(--mo-base) var(--ease-out), box-shadow var(--mo-base) ease, border-color var(--mo-quick) ease;
+}
+.card-sel:hover {
+  transform: translateY(-2px);
+  border-color: var(--c-line-3);
+  box-shadow: 0 12px 28px rgba(0,0,0,.45);
+}
+.card-sel[data-active="true"] {
+  border-color: var(--c-amber);
+  box-shadow: 0 0 0 1px rgba(232,163,61,.3), 0 12px 28px rgba(0,0,0,.5);
+}
+
+/* Make any element clickable-feeling */
+[role="button"], button, a {
+  cursor: pointer;
+}
+button:disabled, [aria-disabled="true"] {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* Animated record dot */
+@keyframes pulse-rec {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+.rec-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--c-rec);
+  animation: pulse-rec var(--mo-live) ease-in-out infinite;
+  box-shadow: 0 0 8px rgba(201,85,72,.6);
+}
+
+/* Letterbox bars (cinematic mode) */
+.letterbox::before, .letterbox::after {
+  content: "";
+  position: fixed; left: 0; right: 0;
+  height: 32px;
+  background: var(--c-black);
+  z-index: 9999;
+  pointer-events: none;
+}
+.letterbox::before { top: 0; }
+.letterbox::after  { bottom: 0; }
+
+/* Film grain overlay (subtle) */
+.grain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: .035;
+  z-index: 9998;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxNjAnIGhlaWdodD0nMTYwJz48ZmlsdGVyIGlkPSduJz48ZmVUdXJidWxlbmNlIHR5cGU9J2ZyYWN0YWxOb2lzZScgYmFzZUZyZXF1ZW5jeT0nMC45JyBudW1PY3RhdmVzPScyJyBzdGl0Y2hUaWxlcz0nc3RpdGNoJy8+PGZlQ29sb3JNYXRyaXggdmFsdWVzPScwIDAgMCAwIDAgIDAgMCAwIDAgMCAgMCAwIDAgMCAwICAwIDAgMCAxIDAnLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0nMTAwJScgaGVpZ2h0PScxMDAlJyBmaWx0ZXI9J3VybCglMjNuKScvPjwvc3ZnPg==");
+}
+
+/* Vignette */
+.vignette {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9997;
+  background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,.35) 100%);
+}
+
+/* Loading shimmer */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.shimmer {
+  background: linear-gradient(90deg, var(--c-panel-2) 0%, var(--c-panel-3) 50%, var(--c-panel-2) 100%);
+  background-size: 200% 100%;
+  animation: shimmer var(--mo-ambient) ease-in-out infinite;
+}
+
+/* Tooltip helper */
+[data-tip] { position: relative; }
+[data-tip]:hover::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--c-void);
+  color: var(--c-ink);
+  border: 1px solid var(--c-line-2);
+  padding: 4px 8px;
+  border-radius: var(--r-sm);
+  font-size:var(--fs-label);
+  font-family: var(--f-mono);
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+/* ─── Responsive foundation ──────────────────────────────────────────────
+   App-wide mobile behaviors. Individual surfaces layer their own media
+   queries on top; these are the safe global defaults. */
+
+/* Studio top nav → horizontal scroll strip on narrow screens */
+.cina-topnav { overflow-x: auto; overflow-y: hidden; scrollbar-width: none; -webkit-overflow-scrolling: touch; flex-wrap: nowrap; max-width: 100%; }
+.cina-topnav::-webkit-scrollbar { display: none; }
+.cina-topnav > *, .cina-topnav button { flex-shrink: 0; white-space: nowrap; }
+
+@media (max-width: 900px) {
+  .cina-topnav button { padding: 0 11px !important; white-space: nowrap; }
+}
+
+/* Studio step pages — collapse fixed side panels under content on narrow screens.
+   Inline styles set the desktop grid; these classes override at breakpoints. */
+@media (max-width: 1000px) {
+  /* Vault: roster | stage | inspector → single column, scrolls vertically */
+  .vault-3col { grid-template-columns: 1fr !important; overflow-y: auto; }
+  .vault-3col > * { border-right: none !important; }
+  /* Mint: card | performance → stack */
+  .mint-2col { grid-template-columns: 1fr !important; }
+}
+@media (max-width: 760px) {
+  /* Score control clusters and mint masters wrap to 2-up then 1-up */
+  .fluid-3, .fluid-4 { grid-template-columns: repeat(2, 1fr) !important; }
+}
+@media (max-width: 460px) {
+  .fluid-3, .fluid-4 { grid-template-columns: 1fr !important; }
+}
+
+/* Pitch Night — stage overlays + auction/ledger/chat row stack on phones */
+@media (max-width: 900px) {
+  .pn-3col { grid-template-columns: 1fr !important; }
+  .pn-overlay { position: static !important; grid-template-columns: 1fr !important; padding: 24px clamp(16px,5vw,32px) !important; }
+}
+
+/* Comfortable tap targets on touch devices */
+@media (max-width: 680px) {
+  button, .btn, [role="button"] { min-height: var(--btn-md); }
+  .btn-sm, .btn-icon { min-height: var(--btn-sm); }
+  /* Pull big fixed section paddings in so nothing overflows the viewport */
+  .pn-section, section { }
+}
+
+/* Anything opting into fluid type */
+.fluid-hero  { font-size: var(--fs-hero) !important; }
+.fluid-2xl   { font-size: var(--fs-2xl) !important; }
+.fluid-xl    { font-size: var(--fs-xl) !important; }
+.fluid-lg    { font-size: var(--fs-lg) !important; }
+
+/* Never let a stray element force a horizontal scrollbar on mobile */
+@media (max-width: 680px) {
+  html, body { max-width: 100%; overflow-x: hidden; }
+}
+
+/* From-the-programmer reveal on home tiles ─────────────────────────────── */
+.cina-tile-host .cina-tile-prog {
+  opacity: 0;
+  transition: opacity var(--mo-base) ease;
+}
+.cina-tile-host:hover .cina-tile-prog,
+.cina-tile-host:focus-visible .cina-tile-prog {
+  opacity: 1;
+}
+
+
+/* ─── Skip link ──────────────────────────────────────────────────────────
+   Keyboard users land on the top nav on every route change; this lets them
+   jump straight past it. Off-screen until focused, then a normal amber pill
+   at top-left. CSS :focus rather than JS handlers so it can't desync. */
+.skip-link{position:absolute;left:12px;top:12px;z-index:100;padding:8px 14px;border-radius:var(--r-md);background:var(--c-amber);color:var(--c-on-amber);font-family:var(--f-mono);font-size:var(--fs-label);letter-spacing:.12em;text-decoration:none;transform:translateY(-150%);transition:transform var(--mo-fast,.15s) ease}
+.skip-link:focus,.skip-link:focus-visible{transform:translateY(0);outline:2px solid var(--c-ink);outline-offset:2px}
+#main-content:focus{outline:none}
+
+/* Header tab slot: tabs scroll under a soft edge instead of overlapping the
+   search / wallet / account cluster when the bar runs out of room. */
+.utn-slot{overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-mask-image:linear-gradient(90deg,var(--c-black) calc(100% - 24px),transparent);mask-image:linear-gradient(90deg,var(--c-black) calc(100% - 24px),transparent)}
+.utn-slot::-webkit-scrollbar{display:none}
+.utn-slot nav{flex-shrink:0}
+.utn-slot button,.utn-slot a{flex-shrink:0;white-space:nowrap}
+
+/* Mobile safety hooks — opt-in classes for inline-styled layouts */
+@media (max-width: 760px) {
+  .m-stack { grid-template-columns: minmax(0,1fr) !important; }
+  .m-stack > aside { position: static !important; }
+  .m-2col { grid-template-columns: repeat(2, minmax(0,1fr)) !important; }
+  .m-wrap { flex-wrap: wrap !important; row-gap: 10px; }
+  .m-h1 { font-size: clamp(40px, 11vw, 76px) !important; }
+  .m-pad { padding-left: 16px !important; padding-right: 16px !important; }
+  .m-stack > * { border-right: none !important; }
+  .sv-toolbar__note { display: none; }
+  .m-scroll-x { overflow-x: auto !important; -webkit-overflow-scrolling: touch; }
+  .m-scroll-x > * { min-width: 680px; }
+}

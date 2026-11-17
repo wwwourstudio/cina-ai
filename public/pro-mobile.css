@@ -1,0 +1,104 @@
+/* ── Generic reflow for inline-styled grids (Studio + pro surfaces) ──
+   Same technique as the Watch surface: attribute-substring selectors
+   collapse inline grid-template-columns on phones. auto-fill/auto-fit
+   grids are already responsive and left alone. */
+@media (max-width: 767px) {
+  #root div[style*="grid-template-columns"]:not([style*="auto-fill"]):not([style*="auto-fit"]) {
+    grid-template-columns: 1fr !important;
+  }
+  #root div[style*="repeat(3"]:not([style*="auto-fill"]):not([style*="auto-fit"]),
+  #root div[style*="repeat(4"]:not([style*="auto-fill"]):not([style*="auto-fit"]),
+  #root div[style*="repeat(5"]:not([style*="auto-fill"]):not([style*="auto-fit"]),
+  #root div[style*="repeat(6"]:not([style*="auto-fill"]):not([style*="auto-fit"]) {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  /* Sticky rails go static; big gutters tighten */
+  #root div[style*="position: sticky"], #root aside[style*="position: sticky"] { position: static !important; }
+  #root section { padding-left: 18px !important; padding-right: 18px !important; }
+  html, body, #root { overflow-x: hidden; }
+}
+
+/* pro-mobile.css — mobile reflow for the desktop-first pro surfaces
+   (Producers + Pitch + Studio). Loaded after cina.css on those pages only, so every
+   rule here is automatically scoped to those apps.
+
+   These apps lay out with inline styles, so we target the exact, serialized
+   grid-template-columns strings the browser produces. Selectors are chosen to
+   be unambiguous: where a short template (e.g. "1.6fr 1fr") is a prefix of a
+   real data-table template, we anchor the end with the trailing ";" so the
+   two-column layout rule never hijacks a six-column table. */
+
+@media (max-width: 767px) {
+
+  /* ── Never scroll the page sideways as a whole ── */
+  html, body, #root { overflow-x: hidden; max-width: 100%; }
+
+  /* ── Two-column / sidebar layouts → stack to a single column ──────────── */
+  [style*="grid-template-columns: 320px 1fr 280px"],
+  [style*="grid-template-columns: 300px 1fr 320px"],
+  [style*="grid-template-columns: 360px 1fr"],
+  [style*="grid-template-columns: 340px 1fr"],
+  [style*="grid-template-columns: 260px 1fr"],
+  [style*="grid-template-columns: minmax(260px, 340px) 1fr"],
+  [style*="grid-template-columns: clamp(380px, 34vw, 460px) 1fr"],
+  [style*="grid-template-columns: 1fr 320px"],
+  [style*="grid-template-columns: 1fr 312px"],
+  [style*="grid-template-columns: 1fr 360px"],
+  [style*="grid-template-columns: 1fr 380px"],
+  [style*="grid-template-columns: 1.3fr 1fr 1fr"],
+  [style*="grid-template-columns: 1.4fr 1fr 1fr"],
+  [style*="grid-template-columns: 0.95fr 1.4fr 0.85fr"],
+  [style*="grid-template-columns: 1.2fr 1fr"],
+  [style*="grid-template-columns: 1.25fr 1fr"],
+  [style*="grid-template-columns: 1.4fr 1fr;"],
+  [style*="grid-template-columns: 1.5fr 1fr"],
+  [style*="grid-template-columns: 1.6fr 1fr;"],
+  /* lobby campaign row + a couple of detail-page tables that have no scroll
+     panel of their own — safest to stack their cells than risk a clipped row */
+  [style*="grid-template-columns: minmax(260px, 1.4fr) 110px 110px 1fr 130px 110px"],
+  [style*="grid-template-columns: 120px 90px 1fr 90px 80px"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* ── Equal-column content grids → fewer columns ───────────────────────── */
+  [style*="grid-template-columns: repeat(5, 1fr)"] { grid-template-columns: repeat(2, 1fr) !important; }
+  [style*="grid-template-columns: repeat(4, 1fr)"] { grid-template-columns: repeat(2, 1fr) !important; }
+  [style*="grid-template-columns: repeat(3, 1fr)"] { grid-template-columns: 1fr !important; }
+
+  /* ── Dense data tables → keep columns, scroll the panel horizontally ──
+     Force a comfortable min-width on every row/header that shares the table's
+     column template, and let the direct parent (the bordered panel) scroll. */
+  [style*="grid-template-columns: 1.1fr 1.6fr 1fr 0.8fr 0.7fr"],
+  [style*="grid-template-columns: 1.6fr 1fr 0.8fr 1fr 1fr 1fr"],
+  [style*="grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr 1fr"],
+  [style*="grid-template-columns: 100px 1.6fr 1fr 1fr 1fr 1fr"],
+  [style*="grid-template-columns: 0.8fr 1fr 1.4fr"],
+  [style*="grid-template-columns: 180px 1fr 100px 100px"],
+  [style*="grid-template-columns: 1fr 70px 80px 100px 100px"],
+  [style*="grid-template-columns: 40px 1.5fr 1fr 100px 100px 1fr 100px 100px"] {
+    min-width: 600px !important;
+  }
+  :has(> [style*="grid-template-columns: 1.1fr 1.6fr 1fr 0.8fr 0.7fr"]),
+  :has(> [style*="grid-template-columns: 1.6fr 1fr 0.8fr 1fr 1fr 1fr"]),
+  :has(> [style*="grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr 1fr"]),
+  :has(> [style*="grid-template-columns: 100px 1.6fr 1fr 1fr 1fr 1fr"]),
+  :has(> [style*="grid-template-columns: 0.8fr 1fr 1.4fr"]),
+  :has(> [style*="grid-template-columns: 180px 1fr 100px 100px"]),
+  :has(> [style*="grid-template-columns: 1fr 70px 80px 100px 100px"]),
+  :has(> [style*="grid-template-columns: 40px 1.5fr 1fr 100px 100px 1fr 100px 100px"]) {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* ── Trim the widest desktop side-paddings so content breathes ── */
+  [style*="padding: 0px 56px"],
+  [style*="padding: 22px 56px"],
+  [style*="padding: 30px 56px"],
+  [style*="padding: 28px 32px 96px"],
+  [style*="padding: 0px 48px"],
+  [style*="padding: 44px 56px"],
+  [style*="padding: 40px 56px"] {
+    padding-left: 18px !important;
+    padding-right: 18px !important;
+  }
+}

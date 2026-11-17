@@ -1,0 +1,36 @@
+/* watch-skin.css — "Premiere": the Watch + Producers house style.
+   Structure rules (scales, buttons, headings) apply under every palette;
+   colour + type apply when body[data-cina-mood="premiere"] (the default). */
+
+
+/* Shared scales */
+:root{--w-page:1360px;--w-mid:1120px;--gutter:clamp(20px,4vw,64px);--sec-gap:clamp(56px,7vw,112px)}
+
+body{font-size:var(--fs-body)}
+::selection{background:rgba(var(--accent-rgb),.35);color:var(--c-ink)}
+a{color:var(--c-ink);text-decoration-color:rgba(var(--accent-rgb),.6);text-underline-offset:3px}
+a:hover{color:var(--c-amber-x)}
+
+/* Type — one display voice, optical sizing does the small-size work */
+.t-display{font-optical-sizing:auto;font-weight:500;letter-spacing:-0.01em;text-wrap:balance}
+body[data-cina-mood="premiere"] .t-display[style*="italic"]{font-weight:500}
+h1.t-display{font-size:var(--fs-display)!important;line-height:1.06!important;letter-spacing:-0.025em!important;font-weight:500!important}
+.t-mono{letter-spacing:.08em}
+p{text-wrap:pretty}
+
+/* Buttons — one shape, one primary */
+.btn,.btn-sm,.btn-md,.btn-lg{border-radius:var(--r-1)!important;font-family:var(--f-sans);font-weight:500;letter-spacing:.01em}
+.btn-primary,.btn-primary:hover{color:var(--c-on-amber)!important;font-weight:600}
+.btn-primary:hover{box-shadow:0 0 0 3px rgba(var(--accent-rgb),.22)}
+.btn-ghost:hover{background:var(--c-panel-2)}
+
+/* Top bar — the director's note yields to the controls */
+@media (max-width:1280px){.cw-nav-note{display:none!important}}
+
+/* Inputs */
+body[data-cina-mood="premiere"] input:not([type="range"]):not([type="checkbox"]):not([type="radio"]),
+body[data-cina-mood="premiere"] textarea,body[data-cina-mood="premiere"] select{border-radius:var(--r-1)}
+input:focus-visible,textarea:focus-visible,select:focus-visible,button:focus-visible{outline:2px solid rgba(var(--accent-rgb),.7);outline-offset:2px}
+
+/* Imagery — posters and stills sit square to the grid */
+body[data-cina-mood="premiere"] img{border-radius:inherit}

@@ -1,0 +1,8 @@
+{
+  "name": "Remix Cina ",
+  "description": "Curated cinema, original series, live branched screenings, and director-owned studios.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
